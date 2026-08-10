@@ -1,0 +1,30 @@
+from pydantic import BaseModel, ConfigDict, EmailStr
+from datetime import datetime
+
+class PostBase(BaseModel):
+    title: str
+    content: str
+    published: bool = True
+
+class PostResponse(PostBase):
+    id: int
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True) #ChatGPT told me to put this
+
+class PostCreate(PostBase):
+    pass
+
+#------------  USERS  ----------
+class UserCreate(BaseModel):
+    email: EmailStr
+    password: str
+
+class UserResponse(BaseModel):
+    id: int
+    email: EmailStr
+    created_at: datetime
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
