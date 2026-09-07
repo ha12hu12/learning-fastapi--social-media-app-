@@ -4,6 +4,16 @@ on: [push, pull_request]
 
 jobs:
   job1:
+    env:
+      DATABASE_HOSTNAME=localhost
+      DATABASE_PORT=5432
+      DATABASE_PASSWORD=ha12hu12
+      DATABASE_NAME=fastapi_hu
+      DATABASE_USERNAME=postgres
+      SECRET_KEY=e45afb8fc6d6ef3a604be74c10ac147da2fad798a3fddb961f52782be3b66c05
+      ALGORITHM=HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES= 30
+      
     runs-on: ubuntu-latest
     steps:
       - name: pulling git repo
@@ -19,3 +29,8 @@ jobs:
 
       - name: install dependencies
         run: pip install -r requirements.txt
+
+      - name: test with pytest
+        run: |
+          pip install pytest
+          pytest
