@@ -8,5 +8,14 @@ jobs:
     steps:
       - name: pulling git repo
         uses: actions/checkout@v2
-      - name: say hi to hussein
-        run: echo "hi hussein"
+
+      - name: install python v3.11.3
+        uses: actions/setup-python@v2
+        with:
+        python-version: "3.11.3"
+
+      - name: update pip
+        run: python -m pip install --upgrade pip
+
+      - name: install dependencies
+        run: pip install -r requirements.txt
