@@ -3,6 +3,7 @@ from .routers import post, user, auth, vote
 from fastapi import  FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+
 app = FastAPI()
 
 origins = ["*"]
@@ -15,16 +16,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
+@app.get("/root")
 def root():
-    return "root"
+    return {"message": "Hello from testing"}
 
 app.include_router(post.router)
 app.include_router(user.router)
 app.include_router(auth.router)
 app.include_router(vote.router)
 
-#104. What is CORS????? 11:14:28
+#166. CI/CD intro 17:34:15
+
+
+
+
 
 
 

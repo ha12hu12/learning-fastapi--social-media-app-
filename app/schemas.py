@@ -4,10 +4,11 @@ from typing import Optional
 from typing import Annotated
 from pydantic import BaseModel, Field
 
+
 class PostBase(BaseModel):
     title: str
     content: str
-    published: bool
+    published: bool = True
 
 class UserResponse(BaseModel):
     id: int

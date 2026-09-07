@@ -12,7 +12,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False ,bind=engine)
 
 
 #Create (base) variable to inherit from in models
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 Base = declarative_base()
 
 #get_db func

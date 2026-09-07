@@ -1,0 +1,77 @@
+version: '3'
+services:
+  api:
+    image: ha12hu12/fastapi-api
+    volumes:
+      - ./:/usr/src/app:ro #Bind mount: if i make a change in a file 
+                           #it changes automatically i dont need to do docker-compose...
+
+    #in the production file we dont need the command flag bc we dont want --reload
+
+    depends_on:
+      - postgres
+    ports:
+      - 80:8000
+    environment:
+      - DATABASE_HOSTNAME=${DATABASE_HOSTNAME}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+      - SECRET_KEY=${SECRET_KEY}
+      - ALGORITHM=${ALGORITHM}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES}
+
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+volumes:
+  postgres-db:
+
+
+# services
+# = الخدمات التي أريد تشغيلها
+
+# build: .
+# = build the image from the Dockerfile in this directory (.)
+
+# ports:
+# = اربط منافذ الجهاز بالـ Container
+
+# 8000:8000
+# = HOST(me):CONTAINER(example:fastapi(8000))
+
+
+
+
+            #      Docker Compose
+            #            │
+            #            ↓
+            #   ┌─────────────────┐
+            #   │ postgres service│
+            #   └────────┬────────┘
+            #            │
+            # image: postgres:17
+            #            │
+            #            ↓
+            #   ┌─────────────────┐
+            #   │   Container     │
+            #   │   PostgreSQL    │
+            #   │                 │
+            #   │ environment:    │
+            #   │ password = ...  │
+            #   │ database = ...  │
+            #   └────────┬────────┘
+            #            │
+            #            ↓
+            #      Volume
+            #     postgres-db
+            #            │
+            #            ↓
+            # البيانات الدائمة
+

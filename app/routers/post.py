@@ -5,8 +5,6 @@ from ..database import get_db
 from .. import models, schemas, oauth2
 from typing import List, Optional
 
-
-
 router = APIRouter(
     prefix="/posts",
     tags=["Post Control"])
@@ -65,12 +63,11 @@ def get_post(id: int, db: Session = Depends(get_db),
     return post
 
 #Create post
-@router.post("/", response_model=schemas.PostResponse)
+@router.post("/", response_model=schemas.PostResponse, status_code=201)
 def create_post(post: schemas.PostCreate, db: Session = Depends(get_db),
                 current_user: int = Depends(oauth2.get_current_user)):
 
-    print(current_user)
-    new_post = models.Post(owner_id=current_user.id, **post.dict())
+    new_post = models.Post(owner_id=current_user.id, **post.model_dump())
 
     db.add(new_post)
     db.commit()
@@ -120,6 +117,6 @@ def updated_post(updated_post: schemas.PostCreate, id: int,
     if post.owner_id != current_user.id:
         raise HTTPException(403, f"You dont own this post to be able to delete it you monster")
 
-    post_query.update(updated_post.dict())
+    post_query.update(updated_post.model_dump())
 
     return post_query.first()

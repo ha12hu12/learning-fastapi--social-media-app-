@@ -1,0 +1,76 @@
+version: '3'
+services:
+  api:
+    build: .
+    volumes:
+      - ./:/usr/src/app:ro #Bind mount: if i make a change in a file 
+                           #it changes automatically i dont need to do docker-compose...
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    #command flag replaces the command (CMD) in the dockerfile
+    depends_on:
+      - postgres
+    ports:
+      - 8000:8000
+    environment:
+      - DATABASE_HOSTNAME=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_PASSWORD=ha12hu12
+      - DATABASE_NAME=fastapi_hu
+      - DATABASE_USERNAME=postgres
+      - SECRET_KEY=e45afb8fc6d6ef3a604be74c10ac147da2fad798a3fddb961f52782be3b66c05
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES= 30
+
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=ha12hu12
+      - POSTGRES_DB=fastapi_hu
+
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+volumes:
+  postgres-db:
+
+
+# services
+# = الخدمات التي أريد تشغيلها
+
+# build: .
+# = build the image from the Dockerfile in this directory (.)
+
+# ports:
+# = اربط منافذ الجهاز بالـ Container
+
+# 8000:8000
+# = HOST(me):CONTAINER(example:fastapi(8000))
+
+
+
+
+            #      Docker Compose
+            #            │
+            #            ↓
+            #   ┌─────────────────┐
+            #   │ postgres service│
+            #   └────────┬────────┘
+            #            │
+            # image: postgres:17
+            #            │
+            #            ↓
+            #   ┌─────────────────┐
+            #   │   Container     │
+            #   │   PostgreSQL    │
+            #   │                 │
+            #   │ environment:    │
+            #   │ password = ...  │
+            #   │ database = ...  │
+            #   └────────┬────────┘
+            #            │
+            #            ↓
+            #      Volume
+            #     postgres-db
+            #            │
+            #            ↓
+            # البيانات الدائمة
+
