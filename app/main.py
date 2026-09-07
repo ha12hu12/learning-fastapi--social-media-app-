@@ -25,7 +25,8 @@ app.include_router(user.router)
 app.include_router(auth.router)
 app.include_router(vote.router)
 
-#166. CI/CD intro 17:34:15
+#171. Github Secrets 18:11:19
+
 
 
 
